@@ -6,8 +6,13 @@ from pymongo.errors import PyMongoError
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 import requests
+import os
 
-client = MongoClient('mongodb://root:root@192.168.80.242:27017')
+mongo_host = os.environ.get('DB_HOST')
+mongo_port = os.environ.get('DB_PORT')
+mqtt_topic_city = os.environ.get('MQTT_TOPIC_CITY')
+
+client = MongoClient('mongodb://root:root@'+mongo_host+':'+mongo_port)
 db = client['PTIN']
 dron = db['Drones']
 orders = db['Orders']
@@ -28,7 +33,7 @@ def on_message(client, userdata, msg):
     #Aqui podemos poner los ifs para definir un tema determinado
     
     #----------------------------------------------------------------------------------------
-    if msg.topic == "PTIN2023/VILANOVA/DRON/UPDATELOCATION":
+    if msg.topic == "PTIN2023/"+mqtt_topic_city+"/DRON/UPDATELOCATION":
         if(is_json(msg.payload.decode('utf-8'))):
             #tratamiento del mensaje-->
             payload = json.loads(msg.payload.decode('utf-8'))
@@ -61,7 +66,7 @@ def on_message(client, userdata, msg):
             else: 
                 print("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | UPDATELOCATION")
 #-----------------------------------------------------------------------------------------    
-    if msg.topic == "PTIN2023/VILANOVA/DRON/UPDATESTATUS":#Hay que poner un tema en común, sinó se petará todo
+    if msg.topic == "PTIN2023/"+mqtt_topic_city+"/DRON/UPDATESTATUS":#Hay que poner un tema en común, sinó se petará todo
        
 
         if(is_json(msg.payload.decode('utf-8'))):
@@ -110,7 +115,7 @@ def on_message(client, userdata, msg):
                 
                 
                 
-                logging.info("vilanova")
+                logging.info(mqtt_topic_city)
                 update_fields = {
                     'status': payload['status'],
                     'status_num' : payload['status_num']
@@ -139,7 +144,7 @@ def on_message(client, userdata, msg):
 
 
 
-    if msg.topic == "PTIN2023/VILANOVA/A2/FRAN/JOA":#Hay que poner un tema en común, sinó se petará todo
+    if msg.topic == "PTIN2023/"+mqtt_topic_city+"/A2/FRAN/JOA":#Hay que poner un tema en común, sinó se petará todo
         if(is_json(msg.payload.decode('utf-8'))):
             #tratamiento del mensaje-->
             payload = json.loads(msg.payload.decode('utf-8'))
@@ -154,11 +159,3 @@ def on_message(client, userdata, msg):
                 print("PTIN2023/A2/FRAN")        
         else:
             print("Recibido el texto plano siguiente: "+msg.payload.decode('utf-8'))
-
-            
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-
-client.connect("192.168.80.241", 1883 , 60)
-client.loop_forever()

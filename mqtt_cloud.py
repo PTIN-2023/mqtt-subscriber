@@ -149,27 +149,3 @@ def on_message(client, userdata, msg):
                 response =  requests.post(url, json = payload)
             else: 
                 logging.info("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | TOCLOUD_UPDATELOCATION")          
-
-
-
-def start_mqtt_subscriber():
-    # Create an MQTT client
-    client = mqtt.Client()
-
-    # Set up callback functions
-    client.on_connect = on_connect
-    client.on_message = on_message
-
-    # Connect to the MQTT broker running in the mosquitto container
-    client.connect("mosquitto", 1883, 60)
-
-    # Start the MQTT subscriber loop
-    client.loop_forever()
-
-if __name__ == "__main__":
-    # Configure the logging settings
-    logging.basicConfig(level = logging.INFO, format = '%(asctime)s - %(levelname)s - %(message)s')
-    # logging.info("This is an info log message")# Log a message
-    # logging.error("This is an error log message")# Log an error
-    # logging.warning("This is a warning log message")# Log a warning
-    start_mqtt_subscriber()
