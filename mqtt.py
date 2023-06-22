@@ -8,8 +8,8 @@ from mqtt_edge import on_connect as on_connect_edge
 from mqtt_edge import on_message as on_message_edge
 
 mqtt_server_address = os.environ.get('MQTT_SERVER_ADDRESS')
-mqtt_server_port = os.environ.get('MQTT_SERVER_PORT')
-is_local = os.environ.get('IS_LOCAL')
+mqtt_server_port = int(os.environ.get('MQTT_SERVER_PORT'))
+is_local = int(os.environ.get('IS_LOCAL'))
 
 def start_mqtt_subscriber():
     # Create an MQTT client
@@ -24,7 +24,7 @@ def start_mqtt_subscriber():
         client.on_message = on_message_edge
 
     # Connect to the MQTT broker running in the mosquitto container
-    client.connect("mosquitto", 1883, 60)
+    client.connect(mqtt_server_address, mqtt_server_port, 60)
 
     # Start the MQTT subscriber loop
     client.loop_forever()
