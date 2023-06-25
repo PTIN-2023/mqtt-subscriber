@@ -105,7 +105,7 @@ def on_message(client, userdata, msg):
             #YA EXSITE: license_plate,capacitylast,_maintenance_date,beehive,location_in,location_act,location_end
             if all(key in payload for key in needed_keys):                
                 logging.info("update llega aqui siu")
-                url = 'http://api:5000/api/UPDATELOCATION'
+                url = 'http://api:5000/api/update_location'
                 response =  requests.post(url, json = payload)
             else: 
                 logging.info("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | UPDATELOCATION")
@@ -119,7 +119,7 @@ def on_message(client, userdata, msg):
             #si el mensaje es que que queremos, entonces lo tratamos
             if all(key in payload for key in needed_keys):                
                 logging.info("status llega aqui siu")
-                url = 'http://api:5000/api/UPDATESTATUS'
+                url = 'http://api:5000/api/update_status'
                 response =  requests.post(url, json = payload)
             else: 
                 logging.info("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | UPDATESTATUS")          
