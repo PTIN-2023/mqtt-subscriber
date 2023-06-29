@@ -20,7 +20,8 @@ def on_connect(client, userdata, flags, rc):
 # Aqui podemos poner los ifs para definir un tema determinado
 def on_message(client, userdata, msg):
 
-    logging.info("CLOUD: ", msg.topic)
+    logging.info("CLOUD")
+    logging.info(msg.topic)
     
     if msg.topic == "PTIN2023/A2/INCLOUD":#Hay que poner un tema en común, sinó se petará todo
         if(is_json(msg.payload.decode('utf-8'))):
