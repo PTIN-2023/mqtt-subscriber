@@ -26,7 +26,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     
-    print(msg.topic)
+    logging.info("EDGE: ", msg.topic)
     
     #----------------------------------------------------------------------------------------
     if msg.topic == "PTIN2023/"+mqtt_topic_city+"/DRON/UPDATELOCATION":
