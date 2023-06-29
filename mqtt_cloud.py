@@ -154,4 +154,29 @@ def on_message(client, userdata, msg):
                 url = 'http://api:5000/api/TOCLOUD_UPDATELOCATION'
                 response =  requests.post(url, json = payload)
             else: 
-                logging.info("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | TOCLOUD_UPDATELOCATION")          
+                logging.info("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | TOCLOUD_UPDATELOCATION")           #----------------------------------------------------------------------------------------
+    
+    
+    if msg.topic == "PTIN2023/VILANOVA/DRON/UPDATELOCATION":
+        if(is_json(msg.payload.decode('utf-8'))):
+            payload = json.loads(msg.payload.decode('utf-8'))
+            needed_keys = ['id_dron', 'location_act', 'status', 'status_num', 'battery', 'autonomy']
+            if all(key in payload for key in needed_keys):                
+                logging.info("update llega aqui siu")
+                url = "http://192.168.80.242:5000/api/update_location"
+                response =  requests.post(url, json = payload)
+            else: 
+                logging.info("SUBNORMAL!!! ENVIA BIEN LOS CAMPOS | UPDATELOCATION")
+                
+#-----------------------------------------------------------------------------------------    
+    if msg.topic == "PTIN2023/VILANOVA/DRON/UPDATESTATUS":#Hay que poner un tema en común, sinó se petará todo
+       
+        if(is_json(msg.payload.decode('utf-8'))):
+            payload = json.loads(msg.payload.decode('utf-8'))
+            needed_keys = ['id_dron', 'status', 'status_num']
+            if all(key in payload for key in needed_keys):
+                logging.info("status llega aqui siu")
+                url = "http://192.168.80.242:5000/api/update_status"
+                response =  requests.post(url, json = payload)     
+
+   
